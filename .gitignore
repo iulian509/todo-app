@@ -1,0 +1,21 @@
+# IDE
+.vscode
+
+# Unit test / coverage
+htmlcov/
+.coverage
+.coverage.*
+.pytest_cache
+
+# SQLite
+*.db
+
+# Python compiled files
+__pycache__
+*.pyc
+
+# Virtual environment
+venv/
+
+# Frontend
+node_modules
