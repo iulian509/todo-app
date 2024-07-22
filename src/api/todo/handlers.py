@@ -1,11 +1,9 @@
 from common.constants import (
     BAD_REQUEST,
-    HTTP_400,
-    HTTP_404,
     NOT_FOUND,
     VALUE_AREADY_EXISTS,
 )
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -19,7 +17,7 @@ async def get(todo_id: int, db_session: AsyncSession):
     )
     db_task_result = db_task.scalars().one_or_none()
     if db_task_result is None:
-        raise HTTPException(status_code=HTTP_404, detail=NOT_FOUND)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=NOT_FOUND)
     return db_task_result
 
 
@@ -37,10 +35,13 @@ async def create(todo: TodoCreateSchema, db_session: AsyncSession):
         await db_session.commit()
         return db_task
     except ValueError as error:
-        raise HTTPException(status_code=HTTP_400, detail=BAD_REQUEST.format(error))
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=BAD_REQUEST.format(error)
+        )
     except IntegrityError:
         raise HTTPException(
-            status_code=HTTP_400, detail=BAD_REQUEST.format(VALUE_AREADY_EXISTS)
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=BAD_REQUEST.format(VALUE_AREADY_EXISTS),
         )
 
 
@@ -57,7 +58,8 @@ async def update(todo_id: int, todo: TodoUpdateSchema, db_session: AsyncSession)
         return db_task
     except IntegrityError:
         raise HTTPException(
-            status_code=HTTP_400, detail=BAD_REQUEST.format(VALUE_AREADY_EXISTS)
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=BAD_REQUEST.format(VALUE_AREADY_EXISTS),
         )
 
 

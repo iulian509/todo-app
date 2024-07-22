@@ -2,7 +2,7 @@ from common.dependencies import get_db
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from todo.schemas import TodoCreateSchema, TodoSchema, TodoUpdateSchema
-from todo.services import create, delete, get, list_all, update
+from todo.handlers import create, delete, get, list_all, update
 
 router = APIRouter()
 
